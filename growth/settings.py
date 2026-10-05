@@ -1,9 +1,12 @@
 import dj_database_url
 import os
+from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-change-me")
-DEBUG = os.environ.get("DEBUG", "1") == "1"
+DEBUG = os.environ.get("DEBUG", "0") == "1"
+if not DEBUG and SECRET_KEY == "dev-change-me":
+    raise ImproperlyConfigured("SECRET_KEY de développement interdite quand DEBUG est désactivé")
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o]
 INSTALLED_APPS = ["django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",

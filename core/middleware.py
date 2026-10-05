@@ -1,4 +1,4 @@
-import base64, os
+import base64, hmac, os
 from django.http import HttpResponse
 
 class Gate:
@@ -12,7 +12,7 @@ class Gate:
             h, ok = request.META.get("HTTP_AUTHORIZATION", ""), False
             if h.startswith("Basic "):
                 try:
-                    ok = base64.b64decode(h[6:]).decode().partition(":")[2] == pw
+                    ok = hmac.compare_digest(base64.b64decode(h[6:]).decode().partition(":")[2], pw)
                 except Exception:
                     pass
             if not ok:

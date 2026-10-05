@@ -1,4 +1,5 @@
 import calendar as cal
+import re
 import json, os, time
 from .conf import conf
 from datetime import timedelta
@@ -47,7 +48,8 @@ def home(request):
     since = t - timedelta(days=6)
     rows = []
     for p in Project.objects.all():
-        series = _daily(Click.objects.filter(post__project=p, at__date__gte=since), since, 7)
+        series = _daily(Click.objects.filter(po
+st__project=p, at__date__gte=since), since, 7)
         rows.append({"p": p, "due": p.post_set.filter(status="planned", scheduled_for__lte=t).count(),
                      "clicks": sum(series), "spark": _spark(series),
                      "convs": Conversion.objects.filter(project=p, at__date__gte=since).count()})
@@ -86,7 +88,8 @@ def _steps(p):
     return [
         {"t": "Ajouter ton numéro WhatsApp", "h": "Il apparaît sur tes visuels et ta page publique.", "d": bool(p.whatsapp), "u": u("settings", p.pk)},
         {"t": "Générer ta première semaine de posts", "h": "Un clic suffit : 7 posts prêts à copier.", "d": p.post_set.exists(), "u": u("calendar", p.pk)},
-        {"t": "Publier ton premier post", "h": "Copie le texte, colle-le sur ton réseau, marque-le publié.", "d": p.post_set.filter(status="published").exists(), "u": u("today", p.pk)},
+        {"t": "Publier ton premier post", "h": "Copie le te
+xte, colle-le sur ton réseau, marque-le publié.", "d": p.post_set.filter(status="published").exists(), "u": u("today", p.pk)},
         {"t": "Activer l'écriture par IA", "h": "Colle ta clé Anthropic dans Paramètres.", "d": bool(conf("ANTHROPIC_API_KEY")), "u": u("app_settings")},
         {"t": "Brancher ton site pour mesurer les commandes", "h": "Copie la clé du projet dans ton site.", "d": p.conversion_set.exclude(kind="lead").exists(), "u": u("settings", p.pk)},
         {"t": "Partager ta page de capture", "h": "Mets-la en bio : elle collecte les prospects.", "d": p.lead_set.exists(), "u": u("growth", p.pk)},
@@ -110,7 +113,8 @@ def today(request, pk):
     steps = _steps(p)
     return render(request, "today.html", _ctx(p, "today", steps=steps, steps_done=sum(x["d"] for x in steps),
         due=[_decorate(request, x) for x in planned.filter(scheduled_for__lte=t)],
-        done=p.post_set.filter(status="published", published_on=t).count(),
+        done=p.post_set.filter(status="published", pub
+lished_on=t).count(),
         upcoming=planned.filter(scheduled_for__gt=t)[:3], has_plan=planned.exists(), streak=_streak(p, t), tip=tip,
         clicks=sum(c_series), convs=sum(v_series), c_spark=_spark(c_series), v_spark=_spark(v_series), week=week,
         reg_total=reg_total, reg_done=reg_done, reg_pct=round(100 * reg_done / reg_total) if reg_total else 0))
@@ -143,7 +147,8 @@ def results(request, pk):
     cost = round(p.monthly_cost * days / 30)
     roi = round(100 * (rev - cost) / cost) if cost else None
     prev_c = Click.objects.filter(post__project=p, at__date__gte=before, at__date__lt=since).count()
-    prev_v = Conversion.objects.filter(project=p, at__date__gte=before, at__date__lt=since).count()
+    prev_v = Co
+nversion.objects.filter(project=p, at__date__gte=before, at__date__lt=since).count()
     chan = {}
     for r in clicks_qs.values("post__channel").annotate(n=Count("id")):
         chan.setdefault(r["post__channel"], {"c": 0, "v": 0})["c"] = r["n"]
@@ -170,7 +175,8 @@ def results(request, pk):
     elif rows and rows[0]["convs"]:
         tips.append(f"Le canal qui convertit le mieux : {rows[0]['channel']} ({rows[0]['rate']} % de ses clics).")
     elif rows:
-        tips.append("Des clics mais aucune conversion : vérifie que la clé API est branchée sur ton site (Réglages).")
+        tips.append("Des clics mais aucune conversion : vérifie que la clé API est branchée sur ton
+ site (Réglages).")
     best = p.post_set.annotate(c=Count("click", distinct=True), v=Count("conversion", distinct=True)) \
             .filter(c__gt=0).order_by("-v", "-c")[:5]
     for x in best:
@@ -205,7 +211,8 @@ def project_delete(request, pk):
 @require_POST
 def generate_view(request, pk):
     p = get_object_or_404(Project, pk=pk)
-    last = p.post_set.order_by("-scheduled_for").first()
+    last = p.post_se
+t.order_by("-scheduled_for").first()
     start = max(timezone.localdate(), last.scheduled_for + timedelta(days=1)) if last else timezone.localdate()
     services.generate(p, 7, start)
     messages.success(request, "7 nouveaux posts ajoutés au planning.")
@@ -254,9 +261,14 @@ def regenerate(request, pk):
     messages.success(request, "Post remplacé par une nouvelle version.")
     return redirect("today", x.project_id)
 
+BOT_UA = re.compile(r"bot|crawler|spider|facebookexternalhit|whatsapp|telegram|slackbot|preview", re.IGNORECASE)
+
 def go(request, code):
-    x = get_object_or_404(Post, code=code)
-    Click.objects.create(post=x)
+    x = get_object_or_4
+04(Post, code=code)
+    ua = request.META.get("HTTP_USER_AGENT", "")
+    if ua and not BOT_UA.search(ua):
+        Click.objects.create(post=x)
     sep = "&" if "?" in x.project.url else "?"
     return redirect(x.project.url + sep + urlencode({"utm_source": x.channel, "utm_medium": "social",
                     "utm_campaign": "growth-copilot", "utm_content": x.code}))
@@ -296,7 +308,8 @@ def conversion(request):
               "post": Post.objects.filter(project=p, code=data.get("code", "")).first()}
     event_id = str(data.get("event_id", ""))[:80]
     if event_id:  # idempotence : le même événement envoyé deux fois ne compte qu'une fois
-        _, created = Conversion.objects.get_or_create(project=p, event_id=event_id, defaults=fields)
+        _, created = Conversion.objects.get_or_cre
+ate(project=p, event_id=event_id, defaults=fields)
         return JsonResponse({"ok": True, "duplicate": not created})
     Conversion.objects.create(project=p, **fields)
     return JsonResponse({"ok": True})
