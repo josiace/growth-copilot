@@ -6,7 +6,7 @@
 <span class="text-xs opacity-70"><i class="dot"></i> publié <i class="dot off ml-2"></i> prévu</span></div>
 <div class="grid grid-cols-7 gap-1 text-center text-[11px] opacity-60 mb-1"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
 {% for week in weeks %}<div class="grid grid-cols-7 gap-1 mb-1">{% for c in week %}<a href="#d-{{ c.d|date:'Y-m-d' }}" aria-label="{{ c.d|date:'l d F' }}, {{ c.posts|length }} post{{ c.posts|length|pluralize }}"
-class="rounded-lg py-1 text-center {% if not c.in_month %}opacity-30{% endif %} {% if c.posts %}bg-[#eef1f6]{% endif %} {% if c.d == today %}ring-2 ring-[#f2b632]{% endif %}">
+class="rounded-lg py-1 text-center {% if not c.in_month %}opacity-30{% endif %} {% if c.posts %}{% endif %}" {% if c.posts %}style="background:#eef1f6"{% endif %} {% if c.d == today %}style="box-shadow:0 0 0 2px #f2b632"{% endif %}>
 <span class="text-xs block">{{ c.d.day }}</span><span class="flex justify-center gap-[2px] h-2 mt-0.5">{% for x in c.posts|slice:":3" %}<i class="dot ch-{{ x.channel }} {% if x.status != 'published' %}off{% endif %}"></i>{% endfor %}</span></a>{% endfor %}</div>{% endfor %}</section>
 {% regroup posts by scheduled_for as days %}
 {% for day in days %}<section id="d-{{ day.grouper|date:'Y-m-d' }}" class="space-y-2 scroll-mt-16"><h2 class="font-bold text-sm pt-2">{{ day.grouper|date:"l d/m" }}{% if day.grouper == today %} (aujourd'hui){% endif %}</h2>

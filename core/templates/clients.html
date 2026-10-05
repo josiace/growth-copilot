@@ -14,7 +14,7 @@
 {% for l in leads %}<div class="card text-sm"><div class="flex justify-between items-start gap-2"><div><b>{{ l.name }}</b> <span class="opacity-70">{{ l.phone }}</span>
 {% if l.refs %}<span class="chip ml-1">{{ l.refs }} filleul{{ l.refs|pluralize }}</span>{% endif %}
 <p class="text-xs opacity-60">{{ l.created|date:"d/m H:i" }}{% if l.referrer %}, parrainé par {{ l.referrer.name }}{% endif %}{% if l.post %}, via {{ l.post.channel }}{% endif %}</p></div>
-<form method="post" action="{% url 'lead_status' l.pk %}">{% csrf_token %}<button class="chip {% if l.status == 'client' %}!bg-[#1f7a52] text-white{% elif l.status == 'nouveau' %}!bg-[#c0392b] text-white{% endif %}" title="Toucher pour changer : nouveau, contacté, client">{{ l.status }}</button></form></div>
+<form method="post" action="{% url 'lead_status' l.pk %}">{% csrf_token %}<button class="chip {% if l.status == 'client' %}!bg-[#1f7a52] text-white{% elif l.status == 'nouveau' %}!bg-[#c0392b] text-white{% endif %}" style="{% if l.status == 'client' %}background:#1f7a52;color:#fff{% elif l.status == 'nouveau' %}background:#c0392b;color:#fff{% endif %}" title="Toucher pour changer : nouveau, contacté, client">{{ l.status }}</button></form></div>
 <a class="btn-ok block mt-2" target="_blank" rel="noopener" href="{{ l.wa }}">Relancer sur WhatsApp</a></div>
 {% empty %}<div class="card text-sm space-y-2"><b>Aucun prospect pour l'instant.</b><p>Partage ta page de capture dans un post : dès qu'une personne laisse son numéro, elle apparaît ici avec un bouton de relance WhatsApp.</p></div>{% endfor %}</section>
 

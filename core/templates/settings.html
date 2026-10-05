@@ -11,7 +11,7 @@
 <label class="block text-sm font-semibold">Clé du projet<input id="key" readonly class="field mt-1 font-normal" value="{{ p.token }}"></label>
 <div class="grid grid-cols-2 gap-2"><button type="button" class="btn2" onclick="copyFrom('api')">Copier l'adresse</button><button type="button" class="btn2" onclick="copyFrom('key')">Copier la clé</button></div>
 <details class="text-sm"><summary class="cursor-pointer font-semibold">Exemple d'envoi</summary><p class="mt-2"><b>value</b> : montant en FCFA. <b>event_id</b> : identifiant unique de l'événement ; s'il est envoyé deux fois, il ne compte qu'une fois.</p>
-<pre class="overflow-x-auto bg-[#eef1f6] p-2 rounded mt-2">POST {{ api }}
+<pre class="overflow-x-auto p-2 rounded mt-2" style="background:#eef1f6">POST {{ api }}
 {"key":"{{ p.token }}","code":"&lt;utm_content&gt;","kind":"order","value":15000,"event_id":"commande-123"}</pre></details></section>
 
 <form method="post" action="{% url 'project_delete' p.pk %}" onsubmit="return confirm('Supprimer ce projet et tous ses posts ? Cette action est définitive.')">{% csrf_token %}

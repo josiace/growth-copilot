@@ -9,10 +9,10 @@
 <form method="post" action="{% url 'article_del' a.pk %}" onsubmit="return confirm('Rejeter cet article ?')">{% csrf_token %}<button class="btn2 w-full !text-[#c0392b] !border-[#c0392b]">Rejeter</button></form></div></div>{% endfor %}</section>{% endif %}
 
 <section class="card space-y-3"><h2 class="font-bold">Écrire un article</h2>
-{% if not has_ai %}<p class="text-sm bg-[#fff6dc] rounded-lg p-2">Pour des articles rédigés par l'IA, ajoute ta clé dans <a class="underline font-semibold" href="{% url 'app_settings' %}">Paramètres</a>.</p>{% endif %}
+{% if not has_ai %}<p class="text-sm rounded-lg p-2" style="background:#fff6dc">Pour des articles rédigés par l'IA, ajoute ta clé dans <a class="underline font-semibold" href="{% url 'app_settings' %}">Paramètres</a>.</p>{% endif %}
 <form method="post" action="{% url 'article_gen' p.pk %}" class="space-y-2">{% csrf_token %}<input name="topic" class="field" placeholder="Sujet, ex. : où acheter des ingrédients frais à Bamako"><button class="btn w-full">Générer un article</button></form>
-{% for a in articles %}<a href="{% url 'article_edit' a.pk %}" class="block text-sm border-t border-[#eef1f6] pt-2"><b>{{ a.title }}</b>
-<span class="block text-xs {% if a.published %}text-[#1f7a52]{% else %}opacity-60{% endif %}">{% if a.published %}Publié{% else %}Brouillon, à relire puis publier{% endif %}</span></a>{% endfor %}
+{% for a in articles %}<a href="{% url 'article_edit' a.pk %}" class="block text-sm pt-2" style="border-top:1px solid #eef1f6"><b>{{ a.title }}</b>
+<span class="block text-xs {% if a.published %}c-green{% else %}opacity-60{% endif %}">{% if a.published %}Publié{% else %}Brouillon, à relire puis publier{% endif %}</span></a>{% endfor %}
 <div class="grid grid-cols-2 gap-2 pt-1"><input id="l2" readonly class="field text-sm col-span-2" value="{{ blog }}"><button type="button" class="btn2" onclick="copyFrom('l2')">Copier le lien du blog</button><a class="btn2" target="_blank" href="{{ blog }}">Voir le blog</a></div></section>
 
 <section class="card space-y-2"><h2 class="font-bold">Blog automatique : {{ p.get_blog_per_week_display }}</h2>

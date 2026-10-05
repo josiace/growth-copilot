@@ -1,10 +1,8 @@
 <!doctype html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#141b34">
 <title>{% block title %}Growth Copilot{% endblock %}</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
-body{font-family:'Bricolage Grotesque',system-ui,sans-serif;background:#eef1f6;color:#141b34;padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}
+body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#eef1f6;color:#141b34;padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}
 .card{background:#fff;border:1px solid #d5dbe8;border-radius:14px;padding:1rem}
 .field{width:100%;border:1px solid #c9d0e0;background:#fff;border-radius:.6rem;padding:.6rem .75rem}
 .btn,.btn2,.btn3,.btn-ok{display:inline-block;text-align:center;border-radius:.6rem;font-weight:600;padding:.65rem .9rem;cursor:pointer;min-height:2.75rem}
@@ -48,6 +46,83 @@ body[data-tab=results]{--ac:#1f7a52;--acs:#e1f2ea}body[data-tab=help]{--ac:#1f73
 .state{display:flex;gap:.5rem;align-items:flex-start;background:#f7f8fb;border-radius:10px;padding:.5rem .7rem}.state i{width:1rem;height:1rem;border-radius:50%;background:var(--s);flex:none;margin-top:.2rem}
 .faq{border-top:1px solid #eef1f6;padding:.5rem 0}.faq summary{cursor:pointer;font-weight:600}.faq p{margin-top:.4rem;font-size:.92rem}
 code{background:#eef1f6;border-radius:5px;padding:.05rem .35rem;font-size:.85em}
+
+/* Header et navigation */
+header{background:#141b34;color:#fff;position:sticky;top:0;z-index:30;height:3.5rem}
+header>div{max-width:64rem;margin:0 auto;padding:0 1rem;height:100%;display:flex;align-items:center;gap:.75rem}
+header a.logo{font-weight:800;text-decoration:none;color:#fff}
+header .logo span.hidden-sm{display:none}
+@media(min-width:640px){header .logo span.hidden-sm{display:inline}}
+header .logo span.sm-only{display:inline}
+@media(min-width:640px){header .logo span.sm-only{display:none}}
+header select{background:#232c55;border-radius:.5rem;padding:.5rem .5rem .375rem;font-size:.875rem;max-width:9rem;color:#fff;border:none}
+header .btn-help{margin-left:auto;padding:.5rem .75rem;border-radius:.5rem;background:#f2b632;color:#141b34;font-size:.875rem;font-weight:700;text-decoration:none}
+header details{position:relative;cursor:pointer}
+header details>summary{padding:.5rem .75rem;border-radius:.5rem;background:#232c55;font-size:.875rem;font-weight:600;list-style:none}
+header details>summary::-webkit-details-marker{display:none}
+header details .dropdown{position:absolute;right:0;top:100%;margin-top:.5rem;width:15rem;background:#fff;color:#141b34;border-radius:.75rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);padding:.5rem;font-size:.875rem;z-index:40}
+header details .dropdown a{display:block;padding:.625rem .75rem;border-radius:.5rem;text-decoration:none;color:#141b34}
+header details .dropdown a:hover{background:#eef1f6}
+
+/* Main content */
+.shell{position:relative}
+main{max-width:32rem;margin:0 auto;padding:1.25rem 1rem}
+main>.space-y-4>*+*{margin-top:1rem}
+main .messages{display:flex;flex-direction:column;gap:.5rem}
+main .messages .card{font-size:.875rem;font-weight:600}
+main .messages .card.error{border-color:#c0392b;color:#c0392b}
+main .messages .card.success{border-color:#1f7a52;color:#1f7a52}
+
+/* Navigation tabs */
+nav.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d5dbe8;z-index:20;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs .in{display:flex;max-width:32rem;margin:0 auto}
+nav.tabs a{flex:1;text-align:center;padding:.5rem 0 .45rem;font-size:.72rem;font-weight:600;border-top:3px solid transparent;color:#5b6486;position:relative;text-decoration:none}
+nav.tabs a.on{color:var(--c);border-top-color:var(--c);background:var(--cs)}
+nav.tabs svg{width:22px;height:22px;display:block;margin:0 auto 2px;color:var(--c)}
+
+/* Utilitaires */
+.grid{display:grid}
+.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gap-2{gap:.5rem}
+.gap-3{gap:.75rem}
+.gap-4{gap:1rem}
+.flex{display:flex}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.justify-end{justify-content:flex-end}
+.space-y-2>*+*{margin-top:.5rem}
+.space-y-3>*+*{margin-top:.75rem}
+.space-y-4>*+*{margin-top:1rem}
+.text-sm{font-size:.875rem}
+.text-xs{font-size:.75rem}
+.text-base{font-size:1rem}
+.font-bold{font-weight:700}
+.font-semibold{font-weight:600}
+.block{display:block}
+.inline-block{display:inline-block}
+.h-8{height:2rem}
+.h-44{height:11rem}
+.h-52{height:13rem}
+.h-56{height:14rem}
+.rounded{border-radius:.25rem}
+.px-3{padding-left:.75rem;padding-right:.75rem}
+.py-2{padding-top:.5rem;padding-bottom:.5rem}
+.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}
+.ml-1{margin-left:.25rem}
+.ml-auto{margin-left:auto}
+.mt-2{margin-top:.5rem}
+.mt-4{margin-top:1rem}
+.mb-2{margin-bottom:.5rem}
+.mb-3{margin-bottom:.75rem}
+.-mt-2{margin-top:-.5rem}
+.opacity-60{opacity:.6}
+.opacity-70{opacity:.7}
+.border-l-4{border-left:4px solid}
+.border-l-\[\.25rem\]{border-left:.25rem solid}
+.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chart-box{position:relative}
+@media(min-width:640px){.sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(min-width:768px){
  body{padding-bottom:2rem}
  .shell{padding-left:14rem}
@@ -60,23 +135,23 @@ code{background:#eef1f6;border-radius:5px;padding:.05rem .35rem;font-size:.85em}
 @media (prefers-reduced-motion:reduce){#toast{transition:none}}
 </style></head>
 <body data-tab="{{ tab|default:'home' }}">
-<header class="bg-[#141b34] text-white sticky top-0 z-30 h-14"><div class="max-w-5xl mx-auto px-4 h-full flex items-center gap-3">
-<a href="{% url 'home' %}" class="font-extrabold"><span class="hidden sm:inline">Growth Copilot</span><span class="sm:hidden" aria-label="Growth Copilot">GC</span></a>
-{% if p %}<select aria-label="Changer de projet" onchange="location=this.value" class="bg-[#232c55] rounded-lg px-2 py-1.5 text-sm max-w-[9rem]">
+<header><div>
+<a href="{% url 'home' %}" class="logo"><span class="hidden-sm">Growth Copilot</span><span class="sm-only" aria-label="Growth Copilot">GC</span></a>
+{% if p %}<select aria-label="Changer de projet" onchange="location=this.value">
 {% for q in projects %}<option value="{% url 'today' q.pk %}" {% if q.pk == p.pk %}selected{% endif %}>{{ q.name }}</option>{% endfor %}</select>{% endif %}
-<a href="{% if p %}{% url 'help_project' p.pk %}{% else %}{% url 'help' %}{% endif %}" class="ml-auto px-3 py-2 rounded-lg bg-[#f2b632] text-[#141b34] text-sm font-bold">Aide</a>
-<details class="relative"><summary class="cursor-pointer px-3 py-2 rounded-lg bg-[#232c55] text-sm font-semibold">Menu</summary>
-<div class="absolute right-0 mt-2 w-60 bg-white text-[#141b34] rounded-xl shadow-lg p-2 text-sm z-40">
-<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'home' %}">Tous mes projets</a>
-<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% if p %}{% url 'help_project' p.pk %}{% else %}{% url 'help' %}{% endif %}">Guide d'utilisation</a>
-<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'project_new' %}">Nouveau projet</a>
-{% if p %}<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'settings' p.pk %}">Réglages de {{ p.name }}</a>{% endif %}
-<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'app_settings' %}">Paramètres généraux (IA, Telegram)</a></div></details></div></header>
-<div class="shell"><main class="max-w-2xl mx-auto px-4 py-5 space-y-4">
-{% if messages %}<div class="space-y-2">{% for m in messages %}<div role="status" class="card text-sm font-semibold {% if m.tags == 'error' %}!border-[#c0392b] text-[#c0392b]{% else %}!border-[#1f7a52] text-[#1f7a52]{% endif %}">{{ m }}</div>{% endfor %}</div>{% endif %}
+<a href="{% if p %}{% url 'help_project' p.pk %}{% else %}{% url 'help' %}{% endif %}" class="btn-help">Aide</a>
+<details><summary>Menu</summary>
+<div class="dropdown">
+<a href="{% url 'home' %}">Tous mes projets</a>
+<a href="{% if p %}{% url 'help_project' p.pk %}{% else %}{% url 'help' %}{% endif %}">Guide d'utilisation</a>
+<a href="{% url 'project_new' %}">Nouveau projet</a>
+{% if p %}<a href="{% url 'settings' p.pk %}">Réglages de {{ p.name }}</a>{% endif %}
+<a href="{% url 'app_settings' %}">Paramètres généraux (IA, Telegram)</a></div></details></div></header>
+<div class="shell"><main>
+{% if messages %}<div class="messages">{% for m in messages %}<div role="status" class="card {% if m.tags == 'error' %}error{% else %}success{% endif %}">{{ m }}</div>{% endfor %}</div>{% endif %}
 {% block content %}{% endblock %}</main></div>
-{% if p %}<nav class="tabs fixed bottom-0 inset-x-0 bg-white border-t border-[#d5dbe8] z-20" style="padding-bottom:env(safe-area-inset-bottom)" aria-label="Navigation principale">
-<div class="in flex max-w-2xl mx-auto">
+{% if p %}<nav class="tabs" aria-label="Navigation principale">
+<div class="in">
 <a href="{% url 'today' p.pk %}" class="t-today {% if tab == 'today' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span>Aujourd'hui{% if due_count %}<span class="badge">{{ due_count }}</span>{% endif %}</span></a>
 <a href="{% url 'calendar' p.pk %}" class="t-calendar {% if tab == 'calendar' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Planning</span></a>
 <a href="{% url 'growth' p.pk %}" class="t-clients {% if tab == 'clients' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6M17 4.5a3.5 3.5 0 010 7M21.5 20c0-2.8-1.8-4.8-4.5-5.6"/></svg><span>Clients</span></a>
