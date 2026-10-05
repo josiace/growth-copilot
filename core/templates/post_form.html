@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<h1 class="text-2xl font-extrabold">{% if post %}Modifier le post{% else %}Ajouter un post{% endif %}</h1>
+<form method="post" class="card space-y-3">{% csrf_token %}
+{% for f in form %}<label class="block"><span class="text-sm font-semibold">{{ f.label }}</span>{{ f }}
+{% if f.help_text %}<span class="text-xs opacity-70 block mt-1">{{ f.help_text }}</span>{% endif %}
+{% for e in f.errors %}<span class="text-sm text-red-700 block">{{ e }}</span>{% endfor %}</label>{% endfor %}
+<div class="flex gap-2"><button class="btn flex-1">Enregistrer</button><a class="btn2" href="{% url 'calendar' p.pk %}">Annuler</a></div></form>
+{% if post %}<form method="post" action="{% url 'post_delete' post.pk %}" onsubmit="return confirm('Supprimer ce post ?')">{% csrf_token %}
+<button class="btn3 text-[#c0392b]">Supprimer ce post</button></form>{% endif %}
+{% endblock %}

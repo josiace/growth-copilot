@@ -1,0 +1,80 @@
+{% extends "base.html" %}{% block title %}Guide d'utilisation | Growth Copilot{% endblock %}{% block content %}
+<div class="hero"><h1>Guide d'utilisation</h1><p>Tout comprendre en 5 minutes : à quoi sert chaque écran, quoi faire chaque jour, et comment lire les couleurs.</p></div>
+
+<nav class="flex flex-wrap gap-2 text-sm" aria-label="Sommaire">
+<a class="chip-link" href="#demarrer">Démarrer</a><a class="chip-link t-today" href="#today">Aujourd'hui</a><a class="chip-link t-calendar" href="#calendar">Planning</a><a class="chip-link t-clients" href="#clients">Clients</a><a class="chip-link t-create" href="#create">Créer</a><a class="chip-link t-results" href="#results">Résultats</a><a class="chip-link" href="#liens">Liens suivis</a><a class="chip-link" href="#condimat">Brancher Condimat</a><a class="chip-link" href="#couleurs">Couleurs</a><a class="chip-link" href="#faq">Questions</a></nav>
+
+<section id="demarrer" class="card space-y-3 scroll-mt-16"><h2 class="font-bold text-lg">Le principe en 30 secondes</h2>
+<p>Growth Copilot t'aide à <b>trouver des clients</b> pour tes projets. Tu fais tourner une boucle simple, chaque jour :</p>
+<div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-sm">
+<div class="loop t-today"><b>1. Préparer</b><span>L'outil écrit tes posts.</span></div>
+<div class="loop t-calendar"><b>2. Planifier</b><span>Tu les places dans la semaine.</span></div>
+<div class="loop t-today"><b>3. Publier</b><span>Tu copies et publies.</span></div>
+<div class="loop t-clients"><b>4. Capter</b><span>Les visiteurs laissent leur numéro ou commandent.</span></div>
+<div class="loop t-results"><b>5. Mesurer</b><span>Tu vois ce qui marche et tu continues.</span></div></div>
+<h3 class="font-bold pt-2">Démarrer en 5 étapes</h3>
+<ol class="list-decimal pl-5 space-y-1.5">
+<li><b>Crée ton projet</b> (menu, « Nouveau projet ») : décris ton produit, ta cible et ton lien de destination.</li>
+<li>Dans <b>Réglages</b> du projet, ajoute ton numéro WhatsApp et ta couleur de marque.</li>
+<li>Dans <b>Aujourd'hui</b>, clique sur « Générer ma semaine » : 7 posts prêts à copier.</li>
+<li><b>Publie ton premier post</b> en suivant les 3 étapes numérotées de la carte, puis clique sur « Marquer comme publié ».</li>
+<li>Reviens demain : l'écran <b>Aujourd'hui</b> te dit toujours quoi publier. La liste « Pour bien démarrer » te guide jusqu'au bout.</li></ol></section>
+
+<h2 class="font-bold text-lg pt-1">Chaque écran, expliqué</h2>
+
+<details id="today" class="card guide t-today scroll-mt-16"><summary><span class="dotc"></span><b>Aujourd'hui</b><small>Ce que tu publies maintenant</small></summary>
+<div class="guide-body"><p>C'est ton écran de tous les jours. Il affiche les posts à publier, ta régularité sur 7 jours et tes clics et conversions de la semaine.</p>
+<ul><li><b>Étape 1, Copier :</b> le bouton copie le texte, lien suivi compris.</li><li><b>Étape 2, Publier :</b> colle-le sur ton réseau, ou utilise les boutons WhatsApp, Telegram et Facebook qui ouvrent l'application avec le texte déjà prêt.</li><li><b>Étape 3, Valider :</b> « Marquer comme publié » met à jour ta série de jours d'affilée.</li><li><b>Modifier</b> change le texte ; <b>Régénérer</b> demande une nouvelle version.</li></ul>
+<p class="tip">Astuce : publie à l'heure conseillée dans Résultats (« Meilleur moment pour publier »).</p></div></details>
+
+<details id="calendar" class="card guide t-calendar scroll-mt-16"><summary><span class="dotc"></span><b>Planning</b><small>Tous tes posts à venir</small></summary>
+<div class="guide-body"><p>Une vue du mois avec un point coloré par canal (plein = publié, clair = prévu), puis la liste jour par jour.</p>
+<ul><li><b>+7 jours</b> génère la semaine suivante ; <b>Ajouter</b> crée un post toi-même.</li><li>Touche un post pour changer son texte, son canal ou sa date, ou le supprimer.</li><li>La mention rouge « En retard » signale un post prévu qui n'a pas été publié.</li></ul></div></details>
+
+<details id="clients" class="card guide t-clients scroll-mt-16"><summary><span class="dotc"></span><b>Clients</b><small>Prospects, promos et parrainage</small></summary>
+<div class="guide-body"><p>Ta <b>page de capture</b> est une mini-page publique : le visiteur laisse son nom et son numéro. Mets son lien en bio et dans tes posts.</p>
+<ul><li>Chaque prospect arrive dans la liste avec un statut : <b class="c-red">nouveau</b>, <b>contacté</b>, <b class="c-green">client</b>. Touche le statut pour le changer.</li><li><b>Relancer sur WhatsApp</b> ouvre la conversation avec un message déjà écrit (et ton code promo).</li><li>Les <b>codes promo</b> s'affichent sur la page de capture ; le <b>parrainage</b> donne à chaque prospect son propre lien à partager.</li></ul></div></details>
+
+<details id="create" class="card guide t-create scroll-mt-16"><summary><span class="dotc"></span><b>Créer</b><small>Blog pour Google et visuels</small></summary>
+<div class="guide-body"><p>Le <b>blog</b> fait apparaître ton projet sur Google, même quand tu ne publies pas : un article publié aujourd'hui peut ramener des visiteurs pendant des mois.</p>
+<ul><li><b>Générer un article :</b> donne un sujet, relis le brouillon, puis publie-le.</li><li><b>Blog automatique :</b> choisis un rythme ; l'IA écrit un brouillon et te prévient. Tu as 1 heure pour <b class="c-green">Publier</b>, <b>Relire</b> ou <b class="c-red">Rejeter</b> ; sans action, il est publié seul.</li><li><b>Visuels :</b> une affiche carrée ou verticale avec ton nom, ta couleur et ton contact, à télécharger en PNG.</li></ul>
+<p class="tip">Relis toujours les prix, quartiers et délais : ce sont eux qui rendent un article vraiment utile.</p></div></details>
+
+<details id="results" class="card guide t-results scroll-mt-16"><summary><span class="dotc"></span><b>Résultats</b><small>Ce qui rapporte vraiment</small></summary>
+<div class="guide-body"><ul><li><b>Clics, conversions, taux :</b> une conversion est une inscription, une commande ou un prospect obtenu grâce à un post.</li><li><b>Revenu et ROI :</b> le montant des commandes en FCFA. Renseigne ton coût mensuel dans Réglages pour voir le ROI (retour sur investissement).</li><li><b>▲ ▼ :</b> comparaison avec la période précédente (vert = mieux, rouge = moins bien).</li><li><b>Par canal, par heure, par jour :</b> repère le canal et le moment qui fonctionnent, et fais-en plus.</li></ul></div></details>
+
+<details id="settings" class="card guide t-settings scroll-mt-16"><summary><span class="dotc"></span><b>Réglages et Paramètres</b><small>Menu en haut à droite</small></summary>
+<div class="guide-body"><ul><li><b>Réglages du projet :</b> description, cible, lien, numéro WhatsApp, couleur, coût mensuel, et la <b>clé API</b> qui sert à brancher ton site.</li><li><b>Paramètres généraux :</b> clé de l'IA, alertes Telegram, délai de validation du blog, et l'adresse à donner à un minuteur (cron-job.org) pour que le blog tourne tout seul. Chaque réglage a un bouton de test.</li></ul></div></details>
+
+<section id="liens" class="card space-y-2 scroll-mt-16"><h2 class="font-bold text-lg">Pourquoi des liens suivis ?</h2>
+<p>Chaque post contient un lien du type <code>/go/a1b2c3d4/</code>. Quand quelqu'un clique, l'outil compte le clic puis l'envoie vers ton site. C'est ce lien qui permet de savoir <b>quel post et quel canal</b> ont apporté un client. <b>Publie toujours avec le lien fourni</b> : sans lui, rien ne peut être mesuré.</p></section>
+
+<section id="condimat" class="card space-y-2 scroll-mt-16"><h2 class="font-bold text-lg">Brancher Condimat (ou un autre site)</h2>
+<ol class="list-decimal pl-5 space-y-1"><li>Dans <b>Réglages du projet</b>, copie l'adresse de l'API et la clé.</li><li>Dans l'administration de Condimat, ouvre <b>Réglages</b> et colle-les dans la section Growth Copilot.</li><li>Coche la ligne et lance <b>« Tester la connexion »</b>.</li></ol>
+<p>Ensuite, chaque inscription et chaque commande venue d'un lien suivi apparaît dans Résultats, avec son montant. Rien n'est envoyé pour les visiteurs sans lien suivi ou qui refusent la mesure.</p></section>
+
+<section id="couleurs" class="card space-y-3 scroll-mt-16"><h2 class="font-bold text-lg">Le code couleur</h2>
+<p class="text-sm opacity-80">Chaque écran a sa couleur. Les couleurs d'état veulent dire la même chose partout.</p>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+<div class="swatch t-today"><i></i>Aujourd'hui</div><div class="swatch t-calendar"><i></i>Planning</div><div class="swatch t-clients"><i></i>Clients</div><div class="swatch t-create"><i></i>Créer</div><div class="swatch t-results"><i></i>Résultats</div><div class="swatch t-settings"><i></i>Réglages</div></div>
+<div class="grid grid-cols-2 gap-2 text-sm">
+<div class="state" style="--s:#1f7a52"><i></i><span><b>Vert</b> : réussi, publié, client, bonne évolution.</span></div>
+<div class="state" style="--s:#f2b632"><i></i><span><b>Or</b> : à faire, à valider, attention.</span></div>
+<div class="state" style="--s:#c0392b"><i></i><span><b>Rouge</b> : en retard, nouveau à contacter, rejeter, baisse.</span></div>
+<div class="state" style="--s:#c9d0e0"><i></i><span><b>Gris</b> : prévu, pas encore fait.</span></div></div>
+<p class="text-sm"><b>Canaux :</b> <span class="ch ch-whatsapp">whatsapp</span> <span class="ch ch-facebook">facebook</span> <span class="ch ch-tiktok">tiktok</span> <span class="ch ch-telegram">telegram</span></p></section>
+
+<section id="faq" class="card space-y-2 scroll-mt-16"><h2 class="font-bold text-lg">Questions fréquentes</h2>
+<details class="faq"><summary>Je vois des clics mais aucune conversion.</summary><p>Ton site n'est probablement pas branché. Reprends « Brancher Condimat » ci-dessus et lance le test de connexion. Teste aussi dans une fenêtre privée, déconnecté de l'administration : l'équipe n'est pas mesurée.</p></details>
+<details class="faq"><summary>L'IA n'écrit pas d'articles.</summary><p>Ajoute ta clé dans Paramètres généraux puis clique sur « Tester l'IA ». Sans clé, l'outil ne crée rien exprès : il ne publiera jamais de texte générique tout seul.</p></details>
+<details class="faq"><summary>Le blog automatique ne publie rien.</summary><p>Un minuteur doit visiter l'adresse affichée dans Paramètres généraux toutes les 5 minutes. En local, lance <code>python manage.py blog_auto</code> à la main.</p></details>
+<details class="faq"><summary>Mes données disparaissent après un redémarrage.</summary><p>Sur l'offre gratuite de Render, la base SQLite est effacée. Ajoute un disque persistant ou passe à PostgreSQL avant d'avoir de vrais résultats à conserver.</p></details>
+<details class="faq"><summary>Quelle est la différence entre le parrainage de Condimat et celui de Growth Copilot ?</summary><p>Celui de Condimat récompense des <b>clients</b> (livraison offerte). Celui de la page de capture de Growth Copilot suit des <b>prospects</b> qui en invitent d'autres.</p></details></section>
+
+<section class="card space-y-2"><h2 class="font-bold text-lg">Petit glossaire</h2>
+<dl class="text-sm space-y-1.5"><div><b>Conversion</b> : action utile obtenue grâce à un post (inscription, commande, prospect).</div><div><b>ROI</b> : Return On Investment, retour sur investissement : ce que tu gagnes par rapport à ce que tu dépenses.</div><div><b>UTM</b> : Urchin Tracking Module, petits paramètres ajoutés à une adresse pour savoir d'où vient le visiteur.</div><div><b>API</b> : Application Programming Interface, la porte par laquelle ton site parle à Growth Copilot.</div><div><b>SEO</b> : Search Engine Optimization, apparaître dans les résultats de Google.</div><div><b>Cron</b> : tâche lancée automatiquement à intervalles réguliers.</div></dl></section>
+{% endblock %}
+{% block scripts %}<script>
+function openTarget(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e&&e.tagName==='DETAILS'){e.open=true;e.scrollIntoView({block:'start'})}}
+addEventListener('hashchange',openTarget);openTarget();
+</script>{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}
+<h1 class="text-2xl font-extrabold">Tes projets</h1>
+{% for r in rows %}<a href="{% url 'today' r.p.pk %}" class="card block">
+<div class="flex justify-between items-start gap-3"><div><b class="text-lg">{{ r.p.name }}</b><p class="text-sm opacity-70">{{ r.p.audience }}</p></div>
+{% if r.due %}<span class="chip">{{ r.due }} à publier</span>{% else %}<span class="text-sm opacity-60">À jour</span>{% endif %}</div>
+<div class="flex items-end gap-4 mt-3"><div class="flex-1"><svg viewBox="0 0 96 28" class="w-full h-8" aria-hidden="true"><polyline fill="none" stroke="#2b3fa0" stroke-width="2" stroke-linejoin="round" points="{{ r.spark }}"/></svg>
+<p class="lbl">clics, 7 derniers jours</p></div>
+<div class="text-right"><p class="kpi">{{ r.clicks }}</p><p class="lbl">clics</p></div>
+<div class="text-right"><p class="kpi">{{ r.convs }}</p><p class="lbl">conversions</p></div></div></a>
+{% empty %}<div class="card space-y-3"><p>Aucun projet pour l'instant. Décris ton produit, ta cible et ton lien : l'outil écrit ta première semaine de posts.</p>
+<a class="btn" href="{% url 'project_new' %}">Créer mon premier projet</a></div>{% endfor %}
+<a href="{% url 'app_settings' %}" class="card block"><b>Paramètres généraux</b><p class="text-sm opacity-80">Clé IA, Telegram, déclenchement automatique du blog : tout se règle ici.</p></a>
+{% endblock %}

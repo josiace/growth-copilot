@@ -1,0 +1,17 @@
+{% extends "base_public.html" %}
+{% block title %}{{ p.name }} : {{ p.offer|default:p.audience }}{% endblock %}
+{% block desc %}{{ p.description|truncatechars:155 }}{% endblock %}{% block ogd %}{{ p.description|truncatechars:155 }}{% endblock %}
+{% block head %}<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"{{ p.name|escapejs }}","url":"{{ canonical }}","description":"{{ p.description|escapejs }}"}</script>{% endblock %}
+{% block body %}
+<h1>{{ p.name }}{% if p.offer %} : {{ p.offer }}{% endif %}</h1><p>{{ p.description }}</p>
+{% if promo %}<div class="card promo"><b>Offre : {{ promo.label }}</b><br>Code <b>{{ promo.code }}</b></div>{% endif %}
+{% if lead %}<div class="card"><h2>Merci {{ lead.name }} !</h2><p>On te contacte très vite. {% if promo %}Garde ton code <b>{{ promo.code }}</b>.{% endif %}</p>
+<p><b>Parraine tes proches :</b> partage ce lien, et chaque personne qui s'inscrit te rapporte des avantages.</p><input readonly value="{{ share }}" onclick="this.select()">
+<a class="btn" href="https://wa.me/?text={{ share|urlencode }}">Partager sur WhatsApp</a></div>
+{% else %}<form method="post" class="card">{% csrf_token %}<h2>Reçois notre offre</h2>{% if err %}<p style="color:#c0392b">{{ err }}</p>{% endif %}
+<input name="name" placeholder="Ton prénom" required autocomplete="given-name"><input name="phone" type="tel" placeholder="Ton numéro de téléphone" required autocomplete="tel">
+<input class="hp" name="site" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" name="ref" value="{{ ref }}"><input type="hidden" name="src" value="{{ src }}">
+<button>Je veux en profiter</button></form>{% endif %}
+{% if wa %}<a class="btn" href="https://wa.me/{{ wa }}">Nous écrire sur WhatsApp</a>{% endif %}
+{% if articles %}<h2>À lire</h2>{% for a in articles %}<p><a href="{% url 'blog_article' p.pk a.slug %}">{{ a.title }}</a></p>{% endfor %}{% endif %}
+{% endblock %}

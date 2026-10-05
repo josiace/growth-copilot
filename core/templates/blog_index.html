@@ -1,0 +1,5 @@
+{% extends "base_public.html" %}
+{% block title %}Blog {{ p.name }}{% endblock %}{% block desc %}Conseils et actualités de {{ p.name }} : {{ p.description|truncatechars:110 }}{% endblock %}{% block ogd %}Conseils de {{ p.name }}{% endblock %}
+{% block body %}<h1>Blog {{ p.name }}</h1>
+{% for a in articles %}<div class="card"><h2><a href="{% url 'blog_article' p.pk a.slug %}">{{ a.title }}</a></h2><p>{{ a.body|truncatechars:150 }}</p></div>{% empty %}<p>Les premiers articles arrivent bientôt.</p>{% endfor %}
+<a class="btn" href="{% url 'landing' p.pk %}">Découvrir {{ p.name }}</a>{% endblock %}

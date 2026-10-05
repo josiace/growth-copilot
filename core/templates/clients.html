@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% block content %}
+<div class="hero">{% include "_hero.html" %}<h1>Clients</h1><p>Les personnes qui t'ont laissé leur numéro, tes codes promo et le parrainage.</p></div>
+<section class="grid grid-cols-3 gap-3">
+<div class="card tint-indigo"><p class="kpi">{{ n_leads }}</p><p class="lbl">prospects</p></div>
+<div class="card tint-green"><p class="kpi">{{ n_clients }}</p><p class="lbl">clients</p></div>
+<div class="card tint-orange"><p class="kpi">{{ n_refs }}</p><p class="lbl">venus par parrainage</p></div></section>
+
+<section class="card space-y-2"><h2 class="font-bold">Ta page de capture</h2>
+<p class="text-sm opacity-80">Mets ce lien en bio et dans tes posts. Chaque visiteur qui laisse son numéro apparaît plus bas.</p>
+<input id="l1" readonly class="field text-sm" value="{{ landing }}"><div class="grid grid-cols-2 gap-2">
+<button type="button" class="btn" onclick="copyFrom('l1')">Copier le lien</button><a class="btn2" target="_blank" href="{{ landing }}">Voir la page</a></div></section>
+
+<section class="space-y-2"><h2 class="font-bold">Prospects</h2>
+{% for l in leads %}<div class="card text-sm"><div class="flex justify-between items-start gap-2"><div><b>{{ l.name }}</b> <span class="opacity-70">{{ l.phone }}</span>
+{% if l.refs %}<span class="chip ml-1">{{ l.refs }} filleul{{ l.refs|pluralize }}</span>{% endif %}
+<p class="text-xs opacity-60">{{ l.created|date:"d/m H:i" }}{% if l.referrer %}, parrainé par {{ l.referrer.name }}{% endif %}{% if l.post %}, via {{ l.post.channel }}{% endif %}</p></div>
+<form method="post" action="{% url 'lead_status' l.pk %}">{% csrf_token %}<button class="chip {% if l.status == 'client' %}!bg-[#1f7a52] text-white{% elif l.status == 'nouveau' %}!bg-[#c0392b] text-white{% endif %}" title="Toucher pour changer : nouveau, contacté, client">{{ l.status }}</button></form></div>
+<a class="btn-ok block mt-2" target="_blank" rel="noopener" href="{{ l.wa }}">Relancer sur WhatsApp</a></div>
+{% empty %}<div class="card text-sm space-y-2"><b>Aucun prospect pour l'instant.</b><p>Partage ta page de capture dans un post : dès qu'une personne laisse son numéro, elle apparaît ici avec un bouton de relance WhatsApp.</p></div>{% endfor %}</section>
+
+<section class="card space-y-3"><h2 class="font-bold">Promos et parrainage</h2>
+<p class="text-sm opacity-80">Après son inscription, chaque prospect reçoit son propre lien de parrainage. Le code promo s'affiche sur ta page de capture.</p>
+{% for x in promos %}<div class="flex justify-between items-center text-sm"><span><b>{{ x.code }}</b> : {{ x.label }}</span>
+<form method="post" action="{% url 'promo_del' x.pk %}">{% csrf_token %}<button class="btn3 !text-[#c0392b]">Retirer</button></form></div>{% endfor %}
+<form method="post" action="{% url 'promo_add' p.pk %}" class="space-y-2">{% csrf_token %}{{ promo_form.code }}{{ promo_form.label }}<button class="btn w-full">Ajouter un code promo</button></form>
+{% if top %}<div class="pt-2"><b class="text-sm">Meilleurs parrains</b>{% for t in top %}<p class="text-sm">{{ forloop.counter }}. {{ t.name }} : {{ t.n }} filleul{{ t.n|pluralize }}</p>{% endfor %}</div>{% endif %}</section>
+{% endblock %}

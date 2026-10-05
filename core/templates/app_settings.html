@@ -1,0 +1,32 @@
+{% extends "base.html" %}{% block content %}
+<div class="hero">{% include "_hero.html" %}<h1>Paramètres généraux</h1><p>Tout se règle ici, sans toucher au code ni aux variables du serveur.</p></div>
+
+<form method="post" class="card space-y-4">{% csrf_token %}<input type="hidden" name="action" value="save">
+<h2 class="font-bold">Intelligence artificielle</h2>
+{% for r in rows|slice:":2" %}<label class="block"><span class="text-sm font-semibold">{{ r.label }}</span>
+<input name="{{ r.name }}" {% if r.secret %}type="password" autocomplete="off" placeholder="{% if r.set %}{{ r.hint }} (enregistrée, laisse vide pour la garder){% else %}sk-ant-...{% endif %}"{% else %}value="{{ r.value }}"{% endif %} class="field mt-1 font-normal">
+{% if r.secret and r.set %}<span class="text-xs"><input type="checkbox" name="del_{{ r.name }}"> Supprimer cette clé</span>{% endif %}</label>{% endfor %}
+<p class="text-xs opacity-70">Sans clé, l'outil ne peut pas écrire d'articles. Tu la crées sur console.anthropic.com.</p>
+
+<h2 class="font-bold pt-2">Alertes Telegram (facultatif)</h2>
+<p class="text-xs opacity-70">Crée un bot avec @BotFather et copie son jeton. Écris-lui un message, puis récupère ton identifiant avec @userinfobot.</p>
+{% for r in rows|slice:"2:4" %}<label class="block"><span class="text-sm font-semibold">{{ r.label }}</span>
+<input name="{{ r.name }}" {% if r.secret %}type="password" autocomplete="off" placeholder="{% if r.set %}{{ r.hint }} (enregistré, laisse vide pour le garder){% else %}123456:ABC...{% endif %}"{% else %}value="{{ r.value }}"{% endif %} class="field mt-1 font-normal">
+{% if r.secret and r.set %}<span class="text-xs"><input type="checkbox" name="del_{{ r.name }}"> Supprimer ce jeton</span>{% endif %}</label>{% endfor %}
+
+<h2 class="font-bold pt-2">Adresse et blog automatique</h2>
+{% for r in rows|slice:"4:" %}<label class="block"><span class="text-sm font-semibold">{{ r.label }}</span><input name="{{ r.name }}" value="{{ r.value }}" class="field mt-1 font-normal"></label>{% endfor %}
+<button class="btn w-full">Enregistrer les paramètres</button></form>
+
+<section class="card space-y-2"><h2 class="font-bold">Tester</h2>
+<div class="grid grid-cols-2 gap-2">
+<form method="post">{% csrf_token %}<input type="hidden" name="action" value="test_ai"><button class="btn2 w-full">Tester l'IA</button></form>
+<form method="post">{% csrf_token %}<input type="hidden" name="action" value="test_tg"><button class="btn2 w-full">Tester Telegram</button></form></div></section>
+
+<section class="card space-y-3"><h2 class="font-bold">Déclenchement automatique du blog</h2>
+<p class="text-sm opacity-80">Pour que le blog automatique tourne en ligne, un minuteur doit visiter l'adresse ci-dessous toutes les 5 minutes (service gratuit : cron-job.org).</p>
+{% if has_cron %}<input id="cr" readonly class="field text-sm" value="{{ cron_url }}"><button type="button" class="btn w-full" onclick="copyFrom('cr')">Copier l'adresse du minuteur</button>
+<form method="post" onsubmit="return confirm('Générer une nouvelle clé ? L\'ancienne adresse cessera de fonctionner.')">{% csrf_token %}<input type="hidden" name="action" value="gen_cron"><button class="btn3">Générer une nouvelle clé</button></form>
+{% else %}<form method="post">{% csrf_token %}<input type="hidden" name="action" value="gen_cron"><button class="btn w-full">Créer la clé de déclenchement</button></form>{% endif %}
+<p class="text-xs opacity-70">En local, ce minuteur n'est pas nécessaire : lance <code>python manage.py blog_auto</code> à la main.</p></section>
+{% endblock %}

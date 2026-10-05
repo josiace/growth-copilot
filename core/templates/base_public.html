@@ -1,0 +1,10 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}{% endblock %}</title><meta name="description" content="{% block desc %}{% endblock %}"><link rel="canonical" href="{{ canonical }}">
+<meta property="og:title" content="{% block ogt %}{{ p.name }}{% endblock %}"><meta property="og:description" content="{% block ogd %}{% endblock %}"><meta property="og:url" content="{{ canonical }}"><meta property="og:type" content="website">
+<style>*{box-sizing:border-box}body{margin:0;font:17px/1.6 system-ui,Arial,sans-serif;color:#141b34;background:#f4f6fa}main{max-width:40rem;margin:0 auto;padding:1.2rem}
+header{background:{{ p.color }};color:#fff;padding:1rem}header a{color:#fff;font-weight:800;text-decoration:none;font-size:1.2rem;max-width:40rem;margin:0 auto;display:block}
+h1{line-height:1.2}.card{background:#fff;border-radius:14px;padding:1rem;margin:1rem 0;border:1px solid #d5dbe8}
+input,button,.btn{font:inherit;width:100%;padding:.8rem;border-radius:10px;border:1px solid #c9d0e0;margin:.3rem 0}
+button,.btn{background:{{ p.color }};color:#fff;border:0;font-weight:700;text-align:center;display:block;text-decoration:none;cursor:pointer}
+.promo{background:#fff6dc;border-left:4px solid #f2b632}.hp{position:absolute;left:-9999px}a{color:{{ p.color }}}</style>
+{% block head %}{% endblock %}</head><body><header><a href="{% url 'landing' p.pk %}">{{ p.name }}</a></header><main>{% block body %}{% endblock %}</main></body></html>

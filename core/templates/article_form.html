@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block content %}
+<h1 class="text-2xl font-extrabold">Modifier l'article</h1>
+<p class="text-sm opacity-80">Relis le texte avant de publier : il doit être exact et refléter ton activité. Enregistrer annule la publication automatique : coche « Publié » pour le mettre en ligne.</p>
+<form method="post" class="card space-y-3">{% csrf_token %}
+{% for f in form %}<label class="block"><span class="text-sm font-semibold">{{ f.label }}</span> {{ f }}{% for e in f.errors %}<span class="text-sm text-red-700 block">{{ e }}</span>{% endfor %}</label>{% endfor %}
+<div class="flex gap-2"><button class="btn flex-1">Enregistrer</button><a class="btn2" href="{% url 'create' p.pk %}">Annuler</a></div></form>
+{% if a.published %}<div class="card text-sm">Adresse publique : <input readonly class="field mt-1" value="{{ url }}"></div>{% endif %}
+<form method="post" action="{% url 'article_del' a.pk %}" onsubmit="return confirm('Supprimer cet article ?')">{% csrf_token %}<button class="btn3 text-[#c0392b]">Supprimer</button></form>
+{% endblock %}

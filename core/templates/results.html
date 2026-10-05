@@ -1,0 +1,73 @@
+{% extends "base.html" %}{% load humanize %}{% block content %}
+<div class="space-y-3"><div class="hero">{% include "_hero.html" %}<h1>Résultats</h1><p>Ce qui t'apporte vraiment des clients et de l'argent.</p></div>
+<div class="flex gap-2 text-sm justify-end"><a class="{% if days == 7 %}chip{% else %}btn3{% endif %}" href="?j=7">7 jours</a><a class="{% if days == 30 %}chip{% else %}btn3{% endif %}" href="?j=30">30 jours</a></div></div>
+
+<section class="grid grid-cols-3 gap-3">
+<div class="card tint-indigo"><p class="kpi">{{ n_clicks }}</p><p class="lbl">clics</p>{% if d_clicks is not None %}<p class="text-xs font-semibold {% if d_clicks >= 0 %}text-[#1f7a52]{% else %}text-[#c0392b]{% endif %}">{% if d_clicks >= 0 %}▲{% else %}▼{% endif %} {{ d_clicks }} %</p>{% endif %}</div>
+<div class="card tint-gold"><p class="kpi">{{ n_conv }}</p><p class="lbl">conversions</p>{% if d_conv is not None %}<p class="text-xs font-semibold {% if d_conv >= 0 %}text-[#1f7a52]{% else %}text-[#c0392b]{% endif %}">{% if d_conv >= 0 %}▲{% else %}▼{% endif %} {{ d_conv }} %</p>{% endif %}</div>
+<div class="card tint-violet"><p class="kpi">{{ rate }}%</p><p class="lbl">convertissent</p></div></section>
+<section class="grid grid-cols-2 gap-3">
+<div class="card tint-green"><p class="kpi">{{ rev|intcomma }} <span class="text-base font-semibold">FCFA</span></p><p class="lbl">revenu généré</p>{% if d_rev is not None %}<p class="text-xs font-semibold {% if d_rev >= 0 %}text-[#1f7a52]{% else %}text-[#c0392b]{% endif %}">{% if d_rev >= 0 %}▲{% else %}▼{% endif %} {{ d_rev }} %</p>{% endif %}</div>
+{% if roi is not None %}<div class="card tint-green"><p class="kpi {% if roi >= 0 %}text-[#1f7a52]{% else %}text-[#c0392b]{% endif %}">{% if roi > 0 %}+{% endif %}{{ roi }} %</p><p class="lbl">ROI (retour sur investissement) pour {{ cost|intcomma }} FCFA dépensés</p></div>
+{% else %}<div class="card tint-indigo"><p class="kpi">{{ rev_per_click|intcomma }}</p><p class="lbl">FCFA par clic. Renseigne ton coût mensuel dans Réglages pour calculer le ROI.</p></div>{% endif %}</section>
+{% if d_clicks is not None or d_conv is not None %}<p class="text-xs opacity-60 -mt-2">Comparé aux {{ days }} jours précédents.</p>{% endif %}
+
+{% if not n_clicks %}<div class="card text-sm space-y-2"><b>Pas encore de clics sur cette période.</b><p>Publie tes posts avec les liens fournis par l'outil : sans eux, rien ne peut être mesuré. Dès les premiers clics, les graphiques apparaissent ici.</p></div>
+{% else %}
+{% if tips %}<section class="card space-y-1.5 border-l-4 !border-l-[#f2b632]"><b>Ce que disent tes chiffres</b>{% for t in tips %}<p class="text-sm">{{ t }}</p>{% endfor %}</section>{% endif %}
+
+<section class="card chart-box"><h2 class="font-bold mb-2">Évolution des clics et des conversions</h2>
+<div class="relative h-56"><canvas id="c-line" role="img" aria-label="Courbe des clics et des conversions par jour"></canvas></div></section>
+
+<section class="card"><h2 class="font-bold mb-3">Du post à la commande</h2>
+<div class="space-y-2 text-sm">
+<div class="flex justify-between"><span>{{ n_posts }} post{{ n_posts|pluralize }} publié{{ n_posts|pluralize }}</span><span class="opacity-70">{% if n_posts %}{{ per_post }} clics par post{% endif %}</span></div>
+<div class="h-8 rounded bg-[#2b3fa0] text-white flex items-center px-3 font-semibold">{{ n_clicks }} clic{{ n_clicks|pluralize }}</div>
+<div class="h-8 rounded bg-[#f2b632] flex items-center px-3 font-semibold" style="width:{{ funnel_w }}%;min-width:7.5rem">{{ n_conv }} conversion{{ n_conv|pluralize }}</div>
+{% if kinds %}<p class="opacity-70">{{ kinds|join:", " }}</p>{% endif %}</div></section>
+
+<section class="grid sm:grid-cols-2 gap-4">
+<div class="card chart-box"><h2 class="font-bold mb-2">Origine des clics</h2><div class="relative h-52"><canvas id="c-donut" role="img" aria-label="Répartition des clics par canal"></canvas></div></div>
+<div class="card chart-box"><h2 class="font-bold mb-2">Taux de conversion par canal</h2><div class="relative h-52"><canvas id="c-rate" role="img" aria-label="Taux de conversion par canal"></canvas></div></div></section>
+
+<section class="card"><h2 class="font-bold mb-2">Détail par canal</h2><div class="space-y-2">
+{% for r in rows %}<div class="flex items-center justify-between text-sm"><span class="ch ch-{{ r.channel }}">{{ r.channel }}</span>
+<span>{{ r.clicks }} clic{{ r.clicks|pluralize }}, {{ r.convs }} conversion{{ r.convs|pluralize }}, <b>{{ r.rate }} %</b>{% if r.rev %}, {{ r.rev|intcomma }} FCFA{% endif %}</span></div>{% endfor %}</div></section>
+
+<section class="card chart-box"><h2 class="font-bold mb-1">Meilleur moment pour publier</h2><p class="text-xs opacity-70 mb-2">Heure des clics (la barre dorée est le pic)</p>
+<div class="relative h-44"><canvas id="c-hours" role="img" aria-label="Clics par heure de la journée"></canvas></div>
+<p class="text-xs opacity-70 mt-4 mb-2">Jour de la semaine</p><div class="relative h-36"><canvas id="c-days" role="img" aria-label="Clics par jour de la semaine"></canvas></div></section>
+{% endif %}
+
+{% if unlinked %}<p class="text-sm opacity-80">{{ unlinked }} conversion{{ unlinked|pluralize }} reçue{{ unlinked|pluralize }} sans lien de post associé.</p>{% endif %}
+{% if best %}<section class="space-y-2"><h2 class="font-bold">Meilleurs posts depuis le début</h2>
+{% for x in best %}<a href="{% url 'post_edit' x.pk %}" class="card block text-sm"><span class="ch ch-{{ x.channel }}">{{ x.channel }}</span>
+<b class="ml-1">{{ x.c }} clic{{ x.c|pluralize }}, {{ x.v }} conversion{{ x.v|pluralize }}{% if x.rev %}, {{ x.rev|intcomma }} FCFA{% endif %}</b><p class="mt-1 opacity-80">{{ x.text|truncatechars:110 }}</p></a>{% endfor %}</section>{% endif %}
+{{ chart|json_script:"chart-data" }}
+{% endblock %}
+{% block scripts %}{% if n_clicks %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script>
+window.addEventListener('load', function () {
+  if (!window.Chart) { document.querySelectorAll('.chart-box').forEach(function (b) { b.insertAdjacentHTML('beforeend', '<p class="text-sm opacity-70 mt-2">Graphique indisponible sans connexion : les chiffres restent visibles dans les cartes.</p>'); }); return; }
+  var D = JSON.parse(document.getElementById('chart-data').textContent), $ = function (i) { return document.getElementById(i); };
+  var COL = {whatsapp: '#1f7a52', facebook: '#2b5fb4', tiktok: '#141b34', telegram: '#2a85b8'}, col = function (c) { return COL[c] || '#6b7390'; };
+  Chart.defaults.font.family = "'Bricolage Grotesque', system-ui, sans-serif"; Chart.defaults.color = '#5b6486';
+  var base = {responsive: true, maintainAspectRatio: false};
+  var many = D.labels.length > 14, peak = function (a) { var m = Math.max.apply(null, a); return a.map(function (v) { return v && v === m ? '#f2b632' : '#2b3fa0'; }); };
+  new Chart($('c-line'), {type: 'line', data: {labels: D.labels, datasets: [
+    {label: 'Clics', data: D.clicks, borderColor: '#2b3fa0', backgroundColor: 'rgba(43,63,160,.12)', fill: true, tension: .35, pointRadius: many ? 0 : 3},
+    {label: 'Conversions', data: D.convs, borderColor: '#f2b632', backgroundColor: '#f2b632', tension: .35, borderWidth: 3, pointRadius: many ? 0 : 4}]},
+    options: Object.assign({}, base, {interaction: {mode: 'index', intersect: false}, plugins: {legend: {position: 'bottom'}},
+      scales: {y: {beginAtZero: true, ticks: {precision: 0}}, x: {grid: {display: false}, ticks: {maxTicksLimit: 7}}}})});
+  new Chart($('c-donut'), {type: 'doughnut', data: {labels: D.channels, datasets: [{data: D.ch_clicks, backgroundColor: D.channels.map(col), borderWidth: 2}]},
+    options: Object.assign({}, base, {cutout: '62%', plugins: {legend: {position: 'bottom'}}})});
+  new Chart($('c-rate'), {type: 'bar', data: {labels: D.channels, datasets: [{data: D.ch_rate, backgroundColor: D.channels.map(col), borderRadius: 6}]},
+    options: Object.assign({}, base, {indexAxis: 'y', plugins: {legend: {display: false}, tooltip: {callbacks: {label: function (c) { return c.raw + ' % (' + D.ch_convs[c.dataIndex] + ' conversion(s))'; }}}},
+      scales: {x: {beginAtZero: true, ticks: {callback: function (v) { return v + ' %'; }}}, y: {grid: {display: false}}}})});
+  new Chart($('c-hours'), {type: 'bar', data: {labels: D.hours.map(function (_, i) { return i + 'h'; }), datasets: [{data: D.hours, backgroundColor: peak(D.hours), borderRadius: 3}]},
+    options: Object.assign({}, base, {plugins: {legend: {display: false}}, scales: {y: {beginAtZero: true, ticks: {precision: 0}}, x: {grid: {display: false}, ticks: {maxTicksLimit: 8}}}})});
+  new Chart($('c-days'), {type: 'bar', data: {labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'], datasets: [{data: D.weekdays, backgroundColor: peak(D.weekdays), borderRadius: 4}]},
+    options: Object.assign({}, base, {plugins: {legend: {display: false}}, scales: {y: {beginAtZero: true, ticks: {precision: 0}}, x: {grid: {display: false}}}})});
+});
+</script>{% endif %}{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero">{% include "_hero.html" %}<h1>{{ p.name }}</h1><p>Ce que tu dois publier aujourd'hui, et rien d'autre.</p>
+<p class="text-sm mt-1"><span class="chip">{{ streak }} jour{{ streak|pluralize }} d'affilée</span>
+<span class="opacity-70 ml-1">{{ done }} publié{{ done|pluralize }} aujourd'hui, {{ due|length }} à publier</span></p></section>
+{% if steps_done < steps|length %}<details class="card" open><summary class="cursor-pointer flex items-center justify-between gap-2"><b>Pour bien démarrer</b><span class="text-sm opacity-70">{{ steps_done }} sur {{ steps|length }}</span></summary>
+<div class="h-2 rounded bg-[#eef1f6] my-3"><div class="h-2 rounded bg-[#2b3fa0]" style="width:{% widthratio steps_done steps|length 100 %}%"></div></div>
+<ul class="space-y-1">{% for s in steps %}<li>{% if s.d %}<p class="text-sm opacity-50 line-through py-1">✓ {{ s.t }}</p>{% else %}<a href="{{ s.u }}" class="block rounded-lg bg-[#eef1f6] px-3 py-2"><b class="text-sm">{{ s.t }}</b><span class="block text-xs opacity-70">{{ s.h }}</span></a>{% endif %}</li>{% endfor %}</ul><a class="block text-sm underline mt-3 text-center" href="{% url 'help_project' p.pk %}">Lire le guide complet</a></details>{% endif %}
+
+<section class="grid grid-cols-2 gap-3">
+<div class="card tint-indigo"><p class="kpi">{{ clicks }}</p><p class="lbl">clics sur 7 jours</p>
+<svg viewBox="0 0 96 28" class="w-full h-7 mt-2" aria-hidden="true"><polyline fill="none" stroke="#2b3fa0" stroke-width="2" stroke-linejoin="round" points="{{ c_spark }}"/></svg></div>
+<div class="card tint-gold"><p class="kpi">{{ convs }}</p><p class="lbl">conversions sur 7 jours</p>
+<svg viewBox="0 0 96 28" class="w-full h-7 mt-2" aria-hidden="true"><polyline fill="none" stroke="#f2b632" stroke-width="2.5" stroke-linejoin="round" points="{{ v_spark }}"/></svg></div></section>
+<section class="card space-y-3"><div class="flex justify-between text-sm"><b>Régularité</b><span>{{ reg_done }} publié{{ reg_done|pluralize }} sur {{ reg_total }} prévu{{ reg_total|pluralize }} ces 7 jours</span></div>
+<div class="h-2.5 rounded bg-[#eef1f6]" role="progressbar" aria-valuenow="{{ reg_pct }}" aria-valuemin="0" aria-valuemax="100"><div class="h-2.5 rounded bg-[#1f7a52]" style="width:{{ reg_pct }}%"></div></div>
+<div class="grid grid-cols-7 text-center text-xs">{% for d in week %}<div><span class="block mb-1 opacity-60">{{ d.d|date:"D"|slice:":1"|upper }}</span>
+<span class="inline-block w-5 h-5 rounded-full border-2 {% if d.on %}bg-[#1f7a52] border-[#1f7a52]{% else %}border-[#c9d0e0]{% endif %} {% if d.now %}ring-2 ring-[#f2b632] ring-offset-1{% endif %}"></span></div>{% endfor %}</div></section>
+
+{% if not has_plan %}<div class="card space-y-3"><b>Ta semaine est vide.</b><p class="text-sm">Un clic suffit pour obtenir 7 jours de publications prêtes à copier.</p>
+<form method="post" action="{% url 'generate' p.pk %}">{% csrf_token %}<button class="btn w-full">Générer ma semaine</button></form></div>
+{% elif not due %}<div class="card"><b>Tout est publié pour aujourd'hui.</b>
+<p class="text-sm mt-1">{% if upcoming %}Prochain post : {{ upcoming.0.scheduled_for|date:"l d/m" }} sur {{ upcoming.0.channel }}.{% else %}Génère la suite depuis le Calendrier.{% endif %}</p></div>{% endif %}
+
+{% for x in due %}<article class="card space-y-3 bd-{{ x.channel }}">
+<div class="flex items-center justify-between"><span class="ch ch-{{ x.channel }}">{{ x.channel }}</span>
+<span class="text-xs opacity-70">{% if x.scheduled_for < today %}en retard, prévu le {{ x.scheduled_for|date:"d/m" }}{% else %}prévu aujourd'hui{% endif %}</span></div>
+<textarea id="t{{ x.pk }}" readonly rows="7" class="field text-sm leading-relaxed">{{ x.final }}</textarea>
+<p class="step"><i>1</i>Copie le texte</p>
+<button type="button" class="btn w-full" onclick="copyFrom('t{{ x.pk }}')">Copier le texte</button>
+<p class="step"><i>2</i>Publie-le sur {{ x.channel }} (ou ouvre directement l'application)</p>
+<div class="grid grid-cols-3 gap-2">
+<a class="btn2" target="_blank" rel="noopener" href="{{ x.wa }}">WhatsApp</a>
+<a class="btn2" target="_blank" rel="noopener" href="{{ x.tg }}">Telegram</a>
+<a class="btn2" target="_blank" rel="noopener" href="{{ x.fb }}">Facebook</a></div>
+<p class="step"><i>3</i>Une fois publié, valide</p>
+<div class="flex items-center gap-1">
+<form method="post" action="{% url 'publish' x.pk %}" class="flex-1">{% csrf_token %}<button class="btn-ok w-full">Marquer comme publié</button></form>
+<a class="btn3" href="{% url 'post_edit' x.pk %}">Modifier</a>
+<form method="post" action="{% url 'regenerate' x.pk %}">{% csrf_token %}<button class="btn3">Régénérer</button></form></div>
+</article>{% endfor %}
+
+<div class="card text-sm"><b>Conseil.</b> {{ tip }}</div>
+{% if upcoming %}<section class="space-y-2"><h2 class="font-bold">Les prochains jours</h2>
+{% for x in upcoming %}<a href="{% url 'post_edit' x.pk %}" class="card block text-sm"><span class="ch ch-{{ x.channel }}">{{ x.channel }}</span>
+<b class="ml-1">{{ x.scheduled_for|date:"D d/m" }}</b><p class="mt-1 opacity-80">{{ x.text|truncatechars:100 }}</p></a>{% endfor %}</section>{% endif %}
+{% endblock %}

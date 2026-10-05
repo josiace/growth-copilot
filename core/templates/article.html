@@ -1,0 +1,6 @@
+{% extends "base_public.html" %}
+{% block title %}{{ a.title }} | {{ p.name }}{% endblock %}{% block desc %}{{ desc }}{% endblock %}{% block ogt %}{{ a.title }}{% endblock %}{% block ogd %}{{ desc }}{% endblock %}
+{% block head %}{% if a.keywords %}<meta name="keywords" content="{{ a.keywords }}">{% endif %}<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{ a.title|escapejs }}","datePublished":"{{ a.created|date:'c' }}","author":{"@type":"Organization","name":"{{ p.name|escapejs }}"}}</script>{% endblock %}
+{% block body %}<article><h1>{{ a.title }}</h1><p style="opacity:.6;font-size:.9rem">{{ a.created|date:"d/m/Y" }}</p>{{ a.body|linebreaks }}</article>
+<div class="card promo"><b>{{ p.name }}</b><p>{{ p.offer|default:p.description }}</p><a class="btn" href="{{ landing }}">En savoir plus</a></div>
+<p><a href="{% url 'blog_index' p.pk %}">Tous les articles</a></p>{% endblock %}

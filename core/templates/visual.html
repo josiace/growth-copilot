@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}
+<h1 class="text-2xl font-extrabold">Créer un visuel</h1>
+<form method="get" class="card space-y-3"><label class="block text-sm font-semibold">Texte principal<textarea name="t" rows="3" class="field font-normal">{{ t }}</textarea></label>
+<label class="block text-sm font-semibold">Format<select name="f" class="field font-normal"><option value="square" {% if f == 'square' %}selected{% endif %}>Carré (post Facebook, WhatsApp)</option><option value="story" {% if f == 'story' %}selected{% endif %}>Vertical (story, statut, TikTok)</option></select></label>
+<button class="btn w-full">Mettre à jour l'aperçu</button></form>
+<div class="card"><img id="prev" src="{{ svg }}" alt="Aperçu du visuel" class="mx-auto max-h-[28rem] rounded-lg"></div>
+<div class="grid grid-cols-2 gap-2"><button type="button" class="btn" onclick="dlPng()">Télécharger en PNG</button><a class="btn2" href="{{ svg }}" download="visuel.svg">Télécharger en SVG</a></div>
+<p class="text-xs opacity-70">La couleur et le numéro WhatsApp viennent des Réglages du projet.</p>
+{% endblock %}
+{% block scripts %}<script>
+function dlPng(){var s=document.getElementById('prev'),i=new Image();i.onload=function(){var c=document.createElement('canvas');c.width=i.width;c.height=i.height;c.getContext('2d').drawImage(i,0,0);
+c.toBlob(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='visuel.png';a.click()})};i.src=s.src}
+</script>{% endblock %}

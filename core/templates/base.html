@@ -1,0 +1,92 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#141b34">
+<title>{% block title %}Growth Copilot{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{font-family:'Bricolage Grotesque',system-ui,sans-serif;background:#eef1f6;color:#141b34;padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}
+.card{background:#fff;border:1px solid #d5dbe8;border-radius:14px;padding:1rem}
+.field{width:100%;border:1px solid #c9d0e0;background:#fff;border-radius:.6rem;padding:.6rem .75rem}
+.btn,.btn2,.btn3,.btn-ok{display:inline-block;text-align:center;border-radius:.6rem;font-weight:600;padding:.65rem .9rem;cursor:pointer;min-height:2.75rem}
+.btn{background:var(--ac);color:#fff}.btn-ok{background:#1f7a52;color:#fff}
+.btn2{border:1px solid var(--ac);color:var(--ac);background:#fff}.btn3{color:var(--ac);padding:.6rem .5rem;text-decoration:underline}
+.chip{background:#f2b632;border-radius:999px;padding:.1rem .6rem;font-weight:700;font-size:.8rem}
+.ch{font-weight:700;font-size:.78rem;padding:.12rem .6rem;border-radius:999px;color:#fff;background:#6b7390}
+.ch-whatsapp{background:#1f7a52!important}.ch-facebook{background:#2b5fb4!important}.ch-tiktok{background:#141b34!important}.ch-telegram{background:#2a85b8!important}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#6b7390}.dot.off{opacity:.4}
+.kpi{font-size:1.9rem;font-weight:800;line-height:1.1}.lbl{font-size:.8rem;opacity:.7}.intro{font-size:.9rem;opacity:.75;margin-top:.15rem}
+nav.tabs a{flex:1;text-align:center;padding:.5rem 0 .45rem;font-size:.72rem;font-weight:600;border-top:3px solid transparent;color:#5b6486;position:relative}
+nav.tabs a.on{color:var(--c);border-top-color:var(--c);background:var(--cs)}
+nav.tabs svg{width:22px;height:22px;display:block;margin:0 auto 2px;color:var(--c)}
+.badge{background:#c0392b;color:#fff;border-radius:999px;font-size:.68rem;padding:0 .4rem;margin-left:.25rem}
+#toast{position:fixed;left:50%;bottom:6.5rem;transform:translate(-50%,20px);background:#141b34;color:#fff;padding:.6rem 1rem;border-radius:999px;opacity:0;pointer-events:none;transition:.2s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
+:focus-visible{outline:3px solid #f2b632;outline-offset:2px}
+
+/* Couleur de chaque section (--ac) et de chaque onglet (--c) ; contrastes vérifiés sur fond blanc */
+body{--ac:#2b3fa0;--acs:#e8ebf8}
+body[data-tab=calendar]{--ac:#0b7678;--acs:#dff1f1}body[data-tab=clients]{--ac:#b85c0d;--acs:#fbecdc}body[data-tab=create]{--ac:#7b3fb5;--acs:#f1e7f8}
+body[data-tab=results]{--ac:#1f7a52;--acs:#e1f2ea}body[data-tab=help]{--ac:#1f73a3;--acs:#e0eff8}body[data-tab=settings]{--ac:#4a5578;--acs:#eceff5}
+.t-today{--c:#2b3fa0;--cs:#e8ebf8}.t-calendar{--c:#0b7678;--cs:#dff1f1}.t-clients{--c:#b85c0d;--cs:#fbecdc}.t-create{--c:#7b3fb5;--cs:#f1e7f8}.t-results{--c:#1f7a52;--cs:#e1f2ea}.t-settings{--c:#4a5578;--cs:#eceff5}
+.hero{position:relative;background:var(--ac);background-image:linear-gradient(135deg,var(--ac),color-mix(in srgb,var(--ac) 55%,#141b34));color:#fff;border-radius:18px;padding:1.1rem 1.2rem 2.6rem;overflow:hidden}
+.hero h1{font-size:1.6rem;font-weight:800;line-height:1.15;padding-right:3.5rem}.hero p{opacity:.92;font-size:.92rem;margin-top:.25rem}
+.hero .hero-ico{position:absolute;right:.9rem;top:.8rem;width:52px;height:52px;opacity:.25}
+.hero .hero-help{position:absolute;right:.9rem;bottom:.7rem;font-size:.78rem;font-weight:600;background:rgba(255,255,255,.2);padding:.2rem .7rem;border-radius:999px;color:#fff}
+.tint-indigo{background:#e8ebf8;border-color:#c9d0f0}.tint-gold{background:#fff6dc;border-color:#f2dc9b}.tint-green{background:#e1f2ea;border-color:#b6dcc8}.tint-violet{background:#f1e7f8;border-color:#dcc4ec}.tint-orange{background:#fbecdc;border-color:#f0cfa8}.tint-red{background:#fbe6e3;border-color:#efbdb6}
+.bd-whatsapp{border-left:6px solid #1f7a52}.bd-facebook{border-left:6px solid #2b5fb4}.bd-tiktok{border-left:6px solid #141b34}.bd-telegram{border-left:6px solid #2a85b8}
+.step{display:flex;align-items:center;gap:.5rem;font-size:.85rem;font-weight:700;margin-top:.5rem}
+.step i{background:var(--ac);color:#fff;border-radius:50%;width:1.4rem;height:1.4rem;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:.75rem;flex:none}
+.chip-link{background:#fff;border:1px solid #d5dbe8;border-radius:999px;padding:.3rem .8rem;font-weight:600;color:var(--c,#2b3fa0)}.chip-link:hover{background:var(--cs,#e8ebf8)}
+.loop{background:var(--cs);border-top:4px solid var(--c);border-radius:10px;padding:.6rem .7rem;display:flex;flex-direction:column;gap:.15rem}.loop b{color:var(--c)}.loop span{font-size:.8rem}
+.guide{border-left:6px solid var(--c);padding:0}.guide summary{display:flex;align-items:center;gap:.6rem;padding:.9rem 1rem;cursor:pointer;flex-wrap:wrap}
+.guide summary small{opacity:.65;flex-basis:100%;margin-left:1.4rem}.guide .dotc{width:.9rem;height:.9rem;border-radius:50%;background:var(--c);flex:none}
+.guide-body{padding:0 1rem 1rem;display:flex;flex-direction:column;gap:.6rem;font-size:.93rem}.guide-body ul{list-style:disc;padding-left:1.2rem;display:flex;flex-direction:column;gap:.35rem}
+.tip{background:#fff6dc;border-left:4px solid #f2b632;border-radius:8px;padding:.5rem .7rem;font-size:.88rem}
+.c-green{color:#1f7a52}.c-red{color:#c0392b}
+.swatch{display:flex;align-items:center;gap:.5rem;background:var(--cs);border-radius:10px;padding:.5rem .7rem;font-weight:600}.swatch i{width:1rem;height:1rem;border-radius:50%;background:var(--c)}
+.state{display:flex;gap:.5rem;align-items:flex-start;background:#f7f8fb;border-radius:10px;padding:.5rem .7rem}.state i{width:1rem;height:1rem;border-radius:50%;background:var(--s);flex:none;margin-top:.2rem}
+.faq{border-top:1px solid #eef1f6;padding:.5rem 0}.faq summary{cursor:pointer;font-weight:600}.faq p{margin-top:.4rem;font-size:.92rem}
+code{background:#eef1f6;border-radius:5px;padding:.05rem .35rem;font-size:.85em}
+@media(min-width:768px){
+ body{padding-bottom:2rem}
+ .shell{padding-left:14rem}
+ nav.tabs{top:3.5rem;bottom:0;left:0;right:auto;width:14rem;border-top:0!important;border-right:1px solid #d5dbe8}
+ nav.tabs .in{flex-direction:column;gap:.25rem;padding:.75rem}
+ nav.tabs a{flex:none;display:flex;align-items:center;gap:.75rem;text-align:left;font-size:.95rem;padding:.7rem .8rem;border-radius:10px;border-top:0}
+ nav.tabs a.on{background:var(--cs);border-top:0;box-shadow:inset 4px 0 0 var(--c)}
+ nav.tabs svg{margin:0}
+ #toast{bottom:2rem}}
+@media (prefers-reduced-motion:reduce){#toast{transition:none}}
+</style></head>
+<body data-tab="{{ tab|default:'home' }}">
+<header class="bg-[#141b34] text-white sticky top-0 z-30 h-14"><div class="max-w-5xl mx-auto px-4 h-full flex items-center gap-3">
+<a href="{% url 'home' %}" class="font-extrabold"><span class="hidden sm:inline">Growth Copilot</span><span class="sm:hidden" aria-label="Growth Copilot">GC</span></a>
+{% if p %}<select aria-label="Changer de projet" onchange="location=this.value" class="bg-[#232c55] rounded-lg px-2 py-1.5 text-sm max-w-[9rem]">
+{% for q in projects %}<option value="{% url 'today' q.pk %}" {% if q.pk == p.pk %}selected{% endif %}>{{ q.name }}</option>{% endfor %}</select>{% endif %}
+<a href="{% if p %}{% url 'help_project' p.pk %}{% else %}{% url 'help' %}{% endif %}" class="ml-auto px-3 py-2 rounded-lg bg-[#f2b632] text-[#141b34] text-sm font-bold">Aide</a>
+<details class="relative"><summary class="cursor-pointer px-3 py-2 rounded-lg bg-[#232c55] text-sm font-semibold">Menu</summary>
+<div class="absolute right-0 mt-2 w-60 bg-white text-[#141b34] rounded-xl shadow-lg p-2 text-sm z-40">
+<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'home' %}">Tous mes projets</a>
+<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% if p %}{% url 'help_project' p.pk %}{% else %}{% url 'help' %}{% endif %}">Guide d'utilisation</a>
+<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'project_new' %}">Nouveau projet</a>
+{% if p %}<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'settings' p.pk %}">Réglages de {{ p.name }}</a>{% endif %}
+<a class="block px-3 py-2.5 rounded-lg hover:bg-[#eef1f6]" href="{% url 'app_settings' %}">Paramètres généraux (IA, Telegram)</a></div></details></div></header>
+<div class="shell"><main class="max-w-2xl mx-auto px-4 py-5 space-y-4">
+{% if messages %}<div class="space-y-2">{% for m in messages %}<div role="status" class="card text-sm font-semibold {% if m.tags == 'error' %}!border-[#c0392b] text-[#c0392b]{% else %}!border-[#1f7a52] text-[#1f7a52]{% endif %}">{{ m }}</div>{% endfor %}</div>{% endif %}
+{% block content %}{% endblock %}</main></div>
+{% if p %}<nav class="tabs fixed bottom-0 inset-x-0 bg-white border-t border-[#d5dbe8] z-20" style="padding-bottom:env(safe-area-inset-bottom)" aria-label="Navigation principale">
+<div class="in flex max-w-2xl mx-auto">
+<a href="{% url 'today' p.pk %}" class="t-today {% if tab == 'today' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg><span>Aujourd'hui{% if due_count %}<span class="badge">{{ due_count }}</span>{% endif %}</span></a>
+<a href="{% url 'calendar' p.pk %}" class="t-calendar {% if tab == 'calendar' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Planning</span></a>
+<a href="{% url 'growth' p.pk %}" class="t-clients {% if tab == 'clients' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6M17 4.5a3.5 3.5 0 010 7M21.5 20c0-2.8-1.8-4.8-4.5-5.6"/></svg><span>Clients</span></a>
+<a href="{% url 'create' p.pk %}" class="t-create {% if tab == 'create' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 7l3 3"/></svg><span>Créer{% if pending_count %}<span class="badge">{{ pending_count }}</span>{% endif %}</span></a>
+<a href="{% url 'results' p.pk %}" class="t-results {% if tab == 'results' %}on{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Résultats</span></a></div></nav>{% endif %}
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window._t);window._t=setTimeout(function(){t.classList.remove('show')},1900)}
+function copyFrom(id){var el=document.getElementById(id);
+ function fb(){el.select();try{document.execCommand('copy');toast('Copié, prêt à coller')}catch(e){toast('Copie impossible : sélectionne le texte')}}
+ if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(el.value).then(function(){toast('Copié, prêt à coller')},fb)}else{fb()}}
+</script>
+{% block scripts %}{% endblock %}</body></html>
