@@ -18,7 +18,7 @@ MIDDLEWARE = ["django.middleware.security.SecurityMiddleware",
     "core.middleware.Gate"]
 ROOT_URLCONF = "growth.urls"
 TEMPLATES = [{"BACKEND": "django.template.backends.django.DjangoTemplates", "DIRS": [], "APP_DIRS": True,
-    "OPTIONS": {"context_processors": ["django.template.context.processors.request",
+    "OPTIONS": {"context_processors": ["django.template.context_processors.request",
         "django.contrib.auth.context_processors.auth", "django.contrib.messages.context_processors.messages"]}}]
 WSGI_APPLICATION = "growth.wsgi.application"
 if os.environ.get("DATABASE_URL"):
